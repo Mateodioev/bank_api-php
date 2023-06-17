@@ -6,9 +6,13 @@
     "autoload": {
         "psr-4": {
             "BankApi\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "require": {
-        "mateodioev/http-router": "v1.1.1-beta"
+        "mateodioev/http-router": "v1.1.1-beta",
+        "mateodioev/db": "^1.1"
     }
 }
