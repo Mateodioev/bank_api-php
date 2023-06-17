@@ -22,18 +22,22 @@ $router->mount('/api', function () use ($router) {
     $router->mount('/users', function () use ($router) {
 
         $userController = new Controllers\UserController;
+        // Get user transactions
+        $router->get('/{id}/transactions', $userController->getTransactions(...));
         // Get user by id
         $router->get('/{id}', $userController->byId(...));
         // Update user info
         $router->put('/{id}', $userController->update(...));
         // Delete user
         $router->delete('/{id}', $userController->delete(...));
-        // Get user transactions
-        $router->get('/{id}/transactions', $userController->getTransactions(...));
-        // Get all user
+        // Get all users
         $router->get('/', $userController->all(...));
         // Create new user
         $router->post('/', $userController->create(...));
+    });
+
+    $router->mount('/transactions', function () use ($router) {
+        $router->all('/', fn () => ErrorResponse::json('Not implemented'));
     });
 });
 

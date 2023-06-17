@@ -64,6 +64,6 @@ class UserController extends baseController
     public function getTransactions(Request $r): Response
     {
         // TODO: Implement userTransactions() method.
-        return Error::json('');
+        return Error::json('Not implemented');
     }
 }
