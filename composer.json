@@ -1,0 +1,14 @@
+{
+    "name": "mateodioev/bank_api",
+    "description": "Bank api for university project",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "BankApi\\": "src/"
+        }
+    },
+    "require": {
+        "mateodioev/http-router": "v1.1.1-beta"
+    }
+}
