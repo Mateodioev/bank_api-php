@@ -23,17 +23,17 @@ $router->mount('/api', function () use ($router) {
 
         $userController = new Controllers\UserController;
         // Get user by id
-        $router->get('/{id}', $userController->oneUser(...));
+        $router->get('/{id}', $userController->byId(...));
         // Update user info
         # $router->put('/{id}', '');
         // Delete user
-        $router->delete('/{id}', $userController->deleteUser(...));
+        $router->delete('/{id}', $userController->delete(...));
         // Get user transactions
-        $router->get('/{id}/transactions', $userController->userTransactions(...));
+        $router->get('/{id}/transactions', $userController->getTransactions(...));
         // Get all user
-        $router->get('/', $userController->allUsers(...));
+        $router->get('/', $userController->all(...));
         // Create new user
-        $router->post('/', $userController->createUser(...));
+        $router->post('/', $userController->create(...));
     });
 });
 

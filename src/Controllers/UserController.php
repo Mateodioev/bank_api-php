@@ -10,7 +10,7 @@ use function json_decode;
 
 class UserController extends baseController
 {
-    public function allUsers(Request $r): Response
+    public function all(Request $r): Response
     {
         $q = $r->query();
         $users = (isset($q['limit']) && isset($q['offset']))
@@ -20,14 +20,14 @@ class UserController extends baseController
         return Success::json($users);
     }
 
-    public function oneUser(Request $r): Response
+    public function byId(Request $r): Response
     {
         $user = User::find($r->param('id'));
 
         return Success::json($user->toArray());
     }
 
-    public function createUser(Request $r): Response
+    public function create(Request $r): Response
     {
         /**
          * @var User $user
@@ -40,7 +40,7 @@ class UserController extends baseController
         return Success::json($user->toArray());
     }
 
-    public function deleteUser(Request $r): Response
+    public function delete(Request $r): Response
     {
         $user = User::find($r->param('id'));
 
@@ -48,8 +48,9 @@ class UserController extends baseController
         return Error::json('User not deleted');
     }
 
-    public function userTransactions(Request $r): Response
+    public function getTransactions(Request $r): Response
     {
+        // TODO: Implement userTransactions() method.
         return Error::json('');
     }
 }
