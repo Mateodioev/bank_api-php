@@ -126,8 +126,11 @@ class User extends Sql
     public function getCreateAt(): DateTime
     {
         if ($this->created_at === null) {
-            $date = self::exec('SELECT created_at FROM users WHERE id = ?', [$this->id])['data'];
-            $this->created_at = new DateTime($date['created_at']);
+            $date = self::exec('SELECT created_at FROM users WHERE id = ?', [$this->id]);
+            if ($date === false) {
+                throw new RequestException('User not found', 404);
+            }
+            $this->created_at = new DateTime($date['data']['created_at']);
         }
         return $this->created_at;
     }
