@@ -25,7 +25,7 @@ $router->mount('/api', function () use ($router) {
         // Get user by id
         $router->get('/{id}', $userController->byId(...));
         // Update user info
-        # $router->put('/{id}', '');
+        $router->put('/{id}', $userController->update(...));
         // Delete user
         $router->delete('/{id}', $userController->delete(...));
         // Get user transactions

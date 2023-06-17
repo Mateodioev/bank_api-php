@@ -40,6 +40,19 @@ class UserController extends baseController
         return Success::json($user->toArray());
     }
 
+    public function update(Request $r): Response
+    {
+        /**
+         * @var User $user
+         */
+        $user = (new \JsonMapper)->map(json_decode($r->body()), User::class);
+        $user->setId($r->param('id'));
+
+        $user->update();
+
+        return Success::json($user->toArray());
+    }
+
     public function delete(Request $r): Response
     {
         $user = User::find($r->param('id'));
