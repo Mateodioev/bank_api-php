@@ -82,6 +82,17 @@ class User extends Sql
         return $this;
     }
 
+    public function delete(): bool
+    {
+        try {
+            if (self::exec('DELETE FROM users WHERE id = ?', [$this->id]) === false) {
+                return false;
+            }
+            return true;
+        } catch (\Throwable) {
+            throw new RequestException('Fail to delete user', 500);
+        }
+    }
     public function findTransactions(): array
     {
         $transactions = self::getAll('SELECT * FROM transactions WHERE user_id = ?', [$this->id]);

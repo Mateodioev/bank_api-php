@@ -39,4 +39,17 @@ class UserController extends baseController
         $user->save();
         return Success::json($user->toArray());
     }
+
+    public function deleteUser(Request $r): Response
+    {
+        $user = User::find($r->param('id'));
+
+        if ($user->delete()) return Success::json($user->toArray());
+        return Error::json('User not deleted');
+    }
+
+    public function userTransactions(Request $r): Response
+    {
+        return Error::json('');
+    }
 }
