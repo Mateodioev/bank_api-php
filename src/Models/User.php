@@ -47,6 +47,7 @@ class User extends Sql
         if (!$user)
             throw new RequestException('User not found', 404);
 
+        $user = $user['data'];
         return $this->setName($user['nombre'])
             ->setBalance($user['saldo']);
     }
