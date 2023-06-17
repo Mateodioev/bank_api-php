@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: php-apache
+    build: .
+    ports:
+      - 8080:80
+    links:
+      - db
+    networks:
+      - app-network
+  db:
+    # container_name: db
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+    ports:
+      - "9906:3306"
+    volumes:
+      - dbdata:/var/lib/mysql/
+      - ./db.sql:/docker-entrypoint-initdb.d/database.sql
+    networks:
+      - app-network
+
+# Docker networks
+networks:
+  app-network:
+    driver: bridge
+
+# Volumes
+volumes:
+  dbdata:
+    driver: local
