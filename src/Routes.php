@@ -28,6 +28,9 @@ class Routes
         });
     }
 
+    #[OA\Get(path: '/api/docs', tags: ['Home'], responses: [
+        new OA\Response(response: 200, description: 'Swagger docs')
+    ])]
     protected static function registerApiDocs(Router &$router): void
     {
         $router->mount('/docs', function () use ($router) {

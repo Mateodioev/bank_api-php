@@ -290,6 +290,14 @@ paths:
       responses:
         '200':
           description: 'Welcome page'
+  /api/docs:
+    get:
+      tags:
+        - Docs
+      operationId: de102a4ebfde0ca96112adb3afd74bd1
+      responses:
+        '200':
+          description: 'Swagger docs'
 components:
   schemas:
     Error:
