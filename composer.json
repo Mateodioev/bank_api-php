@@ -14,9 +14,7 @@
     "require": {
         "mateodioev/http-router": "v1.1.1-beta",
         "mateodioev/db": "^1.1",
-        "netresearch/jsonmapper": "^4.2"
-    },
-    "require-dev": {
+        "netresearch/jsonmapper": "^4.2",
         "zircote/swagger-php": "^4.7"
     },
     "scripts": {
