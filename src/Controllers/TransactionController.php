@@ -7,6 +7,8 @@ use Mateodioev\HttpRouter\{Request, Response};
 
 use OpenApi\Attributes as OA;
 
+use function BankApi\genUUIDv4;
+
 class TransactionController extends baseController
 {
     #[OA\Get(
@@ -94,6 +96,7 @@ class TransactionController extends baseController
          * @var Transaction $transaction
          */
         $transaction = (new \JsonMapper)->map(json_decode($r->body()), Transaction::class);
+        if ($transaction->id === null) $transaction->setId(genUUIDv4());
 
         $user   = User::find($transaction->user_id);
         $target = User::find($transaction->target_id);
