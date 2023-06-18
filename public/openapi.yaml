@@ -95,6 +95,19 @@ paths:
         - Users
       description: 'Get all users'
       operationId: 85a0926c2137b7e26bbfa647ad90ef0a
+      parameters:
+        -
+          name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+        -
+          name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
       responses:
         '200':
           description: 'Users list'

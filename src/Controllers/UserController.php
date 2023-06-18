@@ -15,6 +15,10 @@ class UserController extends baseController
         path: '/api/users/',
         description: 'Get all users',
         tags: ['Users'],
+        parameters: [
+            new OA\Parameter(name: 'limit', in: 'query', required: false, schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'offset', in: 'query', required: false, schema: new OA\Schema(type: 'integer'))
+        ],
         responses: [
             new OA\Response(
                 response: 200,
