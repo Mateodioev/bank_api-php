@@ -1,0 +1,151 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "bankApi",
+    "dateExported": "2023-06-18T16:50:38.098Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "89ed4a7b-17ed-4c19-bff5-41ac32faa40a",
+            "name": "Users",
+            "containerId": "",
+            "created": "2023-06-17T12:18:36.066Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "398a0ed8-72a2-40e6-9ac1-18e59be61529",
+            "name": "Transactions",
+            "containerId": "",
+            "created": "2023-06-17T12:31:24.756Z",
+            "sortNum": 20000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "7b7e493b-c50b-4180-9f8d-4ebd6e274739",
+            "colId": "c26233ac-dd86-4847-8c38-f36558ead11e",
+            "containerId": "89ed4a7b-17ed-4c19-bff5-41ac32faa40a",
+            "name": "Get all users",
+            "url": "localhost:8080/api/users/",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-06-17T11:37:55.480Z",
+            "modified": "2023-06-17T12:18:39.392Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "f69871fc-b8cb-43c4-8b4c-3dbb805b3439",
+            "colId": "c26233ac-dd86-4847-8c38-f36558ead11e",
+            "containerId": "89ed4a7b-17ed-4c19-bff5-41ac32faa40a",
+            "name": "Get user by id",
+            "url": "localhost:8080/api/users/7546ad3c-5234-4d7d-b34b-6af745a41391",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-06-17T11:38:21.256Z",
+            "modified": "2023-06-18T16:40:13.569Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "645760c9-82f2-417e-b75f-1cccdde32b6e",
+            "colId": "c26233ac-dd86-4847-8c38-f36558ead11e",
+            "containerId": "89ed4a7b-17ed-4c19-bff5-41ac32faa40a",
+            "name": "Create new user",
+            "url": "localhost:8080/api/users",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-06-17T11:38:48.295Z",
+            "modified": "2023-06-18T16:40:21.538Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Neto 2\",\n  \"balance\": 100\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "e0267898-b083-48c9-874f-d33c9fa11e9e",
+            "colId": "c26233ac-dd86-4847-8c38-f36558ead11e",
+            "containerId": "89ed4a7b-17ed-4c19-bff5-41ac32faa40a",
+            "name": "Delete user",
+            "url": "localhost:8080/api/users/e8321e69-f5e1-4f81-8663-74e82b401ce4",
+            "method": "DELETE",
+            "sortNum": 40000,
+            "created": "2023-06-17T12:04:17.902Z",
+            "modified": "2023-06-17T16:08:08.363Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "3ad8ba55-debd-4b39-b392-3f3dc3d97e61",
+            "colId": "c26233ac-dd86-4847-8c38-f36558ead11e",
+            "containerId": "89ed4a7b-17ed-4c19-bff5-41ac32faa40a",
+            "name": "Udpdate user info",
+            "url": "localhost:8080/api/users/fc96ef51-2f59-4dfb-a5e7-aab7505b506f",
+            "method": "PUT",
+            "sortNum": 50000,
+            "created": "2023-06-17T12:13:08.472Z",
+            "modified": "2023-06-18T16:42:15.299Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Mateo\",\n  \"balance\": 101\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "767c3b99-70ff-467e-a805-885b681c38c7",
+            "colId": "c26233ac-dd86-4847-8c38-f36558ead11e",
+            "containerId": "89ed4a7b-17ed-4c19-bff5-41ac32faa40a",
+            "name": "Get transactions",
+            "url": "localhost:8080/api/users/fc96ef51-2f59-4dfb-a5e7-aab7505b506f/transactions",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2023-06-17T12:20:00.294Z",
+            "modified": "2023-06-18T16:49:10.442Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "48651c2f-2d67-45ae-85a1-3df7f0d77d9a",
+            "colId": "c26233ac-dd86-4847-8c38-f36558ead11e",
+            "containerId": "398a0ed8-72a2-40e6-9ac1-18e59be61529",
+            "name": "Get transaction by id",
+            "url": "localhost:8080/api/transactions/00461a31-fae6-4e90-a99a-bc31df63161c",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2023-06-18T16:42:36.016Z",
+            "modified": "2023-06-18T16:49:23.025Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "e88f9ea4-afd4-491a-bc6e-17953bbb086e",
+            "colId": "c26233ac-dd86-4847-8c38-f36558ead11e",
+            "containerId": "398a0ed8-72a2-40e6-9ac1-18e59be61529",
+            "name": "Create new transaction",
+            "url": "localhost:8080/api/transactions/",
+            "method": "POST",
+            "sortNum": 90000,
+            "created": "2023-06-18T16:44:03.363Z",
+            "modified": "2023-06-18T16:49:30.345Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"mount\": 10,\n  \"user_id\": \"fc96ef51-2f59-4dfb-a5e7-aab7505b506f\",\n  \"target_id\": \"7546ad3c-5234-4d7d-b34b-6af745a41391\"\n}",
+                "form": []
+            },
+            "tests": []
+        }
+    ]
+}
