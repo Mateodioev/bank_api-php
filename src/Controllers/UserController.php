@@ -42,6 +42,9 @@ class UserController extends baseController
         path: '/api/users/{id}',
         description: 'Find user by id',
         tags: ['Users'],
+        parameters: [
+            new OA\Parameter(name: 'id', in: 'path', required: true, description: 'User id', schema: new OA\Schema(type: 'string'))
+        ],
         responses: [
             new OA\Response(
                 response: 200,
@@ -119,6 +122,9 @@ class UserController extends baseController
         path: '/api/users/{id}',
         description: 'Update existing user',
         tags: ['Users'],
+        parameters: [
+            new OA\Parameter(name: 'id', in: 'path', required: true, description: 'User id', schema: new OA\Schema(type: 'string'))
+        ],
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(
                 properties: [
@@ -162,6 +168,9 @@ class UserController extends baseController
         path: '/api/users/{id}',
         description: 'Delete user',
         tags: ['Users'],
+        parameters: [
+            new OA\Parameter(name: 'id', in: 'path', required: true, description: 'User id', schema: new OA\Schema(type: 'string'))
+        ],
         responses: [
             new OA\Response(
                 response: 200,
@@ -197,6 +206,9 @@ class UserController extends baseController
         path: '/api/users/{id}/transactions',
         description: 'Get user transactions',
         tags: ['Users'],
+        parameters: [
+            new OA\Parameter(name: 'id', in: 'path', required: true, description: 'User id', schema: new OA\Schema(type: 'string'))
+        ],
         responses: [
             new OA\Response(
                 response: 200,
@@ -215,7 +227,6 @@ class UserController extends baseController
             ),
         ]
     )]
-
     public function getTransactions(Request $r): Response
     {
         // TODO: Implement userTransactions() method.

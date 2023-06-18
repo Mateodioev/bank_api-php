@@ -65,6 +65,14 @@ paths:
         - Users
       description: 'Find user by id'
       operationId: 71d110b10b1ac4766abfa25e4fb35916
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'User id'
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: User
@@ -86,6 +94,14 @@ paths:
         - Users
       description: 'Update existing user'
       operationId: 87d6391a31447c282f8cda50910af407
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'User id'
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -120,6 +136,14 @@ paths:
         - Users
       description: 'Delete user'
       operationId: 0b491e804fd1661d3b62451995d0ed41
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'User id'
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: 'User deleted'
@@ -148,6 +172,14 @@ paths:
         - Users
       description: 'Get user transactions'
       operationId: ae38fe71c97a64c95fb80f26fae59cc5
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'User id'
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: 'User transactions'
