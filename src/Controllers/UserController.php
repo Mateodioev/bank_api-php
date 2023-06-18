@@ -204,7 +204,7 @@ class UserController extends baseController
 
     #[OA\Get(
         path: '/api/users/{id}/transactions',
-        description: 'Get user transactions',
+        description: 'Get all user transactions',
         tags: ['Users'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, description: 'User id', schema: new OA\Schema(type: 'string'))
@@ -229,7 +229,9 @@ class UserController extends baseController
     )]
     public function getTransactions(Request $r): Response
     {
-        // TODO: Implement userTransactions() method.
-        return Error::json('Not implemented');
+        $user = User::find($r->param('id'));
+        $transactions = \array_map(fn ($t) => $t->toArray(), $user->findTransactions());
+
+        return Success::json($transactions);
     }
 }

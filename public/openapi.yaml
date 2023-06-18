@@ -3,6 +3,92 @@ info:
   title: 'Bank api'
   version: '0.1'
 paths:
+  '/api/transactions/{id}':
+    get:
+      tags:
+        - Transactions
+      description: 'Get transaction by id'
+      operationId: c10e046e1546d9a65b3c5cb9f4d711f3
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Transaction id'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Transaction
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok: { type: boolean }
+                  data: { $ref: '#/components/schemas/Transaction' }
+                type: object
+        '404':
+          description: 'Transaction not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/transactions/:
+    post:
+      tags:
+        - Transactions
+      description: 'Create new transaction'
+      operationId: bc1671024b0e5badf721efe367c86c1f
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                mount:
+                  description: 'Transaction mount'
+                  type: number
+                  format: float
+                user_id:
+                  description: 'User id'
+                  type: string
+                target_id:
+                  description: 'User id target'
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: 'Transaction created'
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok: { type: boolean }
+                  data: { $ref: '#/components/schemas/Transaction' }
+                type: object
+        '400':
+          description: 'Insufficient user funds'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: 'User not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: 'Duplicated transaction'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: 'Fail to update user info / Transaction not created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /api/users/:
     get:
       tags:
@@ -170,7 +256,7 @@ paths:
     get:
       tags:
         - Users
-      description: 'Get user transactions'
+      description: 'Get all user transactions'
       operationId: ae38fe71c97a64c95fb80f26fae59cc5
       parameters:
         -
@@ -198,6 +284,8 @@ paths:
                 $ref: '#/components/schemas/Error'
   /:
     get:
+      tags:
+        - Home
       operationId: c3271c668d930dbb2f7e8adb51d83b30
       responses:
         '200':
@@ -227,7 +315,8 @@ components:
           type: string
         mount:
           description: 'Transaction mount'
-          type: integer
+          type: number
+          format: float
         created_at:
           description: 'Transaction date'
           type: string

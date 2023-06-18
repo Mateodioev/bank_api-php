@@ -101,9 +101,14 @@ class User extends Sql
             throw new RequestException('Fail to delete user', 500);
         }
     }
+
+    /**
+     * @return Transaction[]
+     */
     public function findTransactions(): array
     {
         $transactions = self::getAll('SELECT * FROM transactions WHERE user_id = ?', [$this->id]);
+        $this->transactions = \array_map(fn ($transaction) => Transaction::fromArray($transaction), $transactions);
         return $this->transactions;
     }
 

@@ -2,6 +2,7 @@ FROM php:8.2-apache
 
 # Copy code
 COPY src/ /var/www/html/src/
+COPY public/ /var/www/html/public/
 COPY index.php /var/www/html/
 COPY composer.json /var/www/html/
 COPY composer.lock /var/www/html/

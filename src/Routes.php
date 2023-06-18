@@ -2,14 +2,13 @@
 
 namespace BankApi;
 
-use BankApi\Models\Error;
 use Mateodioev\HttpRouter\{Response, Router};
 use OpenApi\Attributes as OA;
 
 #[Oa\Info(title: "Bank api", version: "0.1")]
 class Routes
 {
-    #[OA\Get(path: '/')]
+    #[OA\Get(path: '/', tags: ['Home'])]
     #[OA\Response(response: 200, description: 'Welcome page')]
     public static function register(Router &$router): void
     {
@@ -62,7 +61,13 @@ class Routes
     protected static function registerApiTransactions(Router &$router): void
     {
         $router->mount('/transactions', function () use ($router) {
-            $router->all('/', fn () => Error::json('Not implemented'));
+            $transactionController = new Controllers\TransactionController;
+
+            // Get transaction by id
+            $router->get('/{id}', $transactionController->byId(...));
+
+            // Create new transaction
+            $router->post('/', $transactionController->create(...));
         });
     }
 }
