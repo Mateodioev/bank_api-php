@@ -5,14 +5,22 @@ namespace BankApi\Models;
 use BankApi\Db\Sql;
 use DateTime;
 use Mateodioev\HttpRouter\exceptions\RequestException;
+use OpenApi\Attributes as OA;
 
 use function BankApi\genUUIDv4;
 
+#[OA\Schema(type: 'object', title: 'User')]
 class User extends Sql
 {
+    #[OA\Property(type: 'string', description: 'User unique id')]
     public ?string $id = null;
+
+    #[OA\Property(type: 'string', description: 'User name')]
     public string $name;
+
+    #[OA\Property(type: 'float', description: 'User balance')]
     public float $balance = 0;
+    #[OA\Property(type: 'datetime', description: 'User created date')]
     public ?DateTime $created_at = null;
 
     /**

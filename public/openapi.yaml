@@ -1,0 +1,227 @@
+openapi: 3.0.0
+info:
+  title: 'Bank api'
+  version: '0.1'
+paths:
+  /api/users/:
+    get:
+      tags:
+        - Users
+      description: 'Get all users'
+      operationId: 85a0926c2137b7e26bbfa647ad90ef0a
+      responses:
+        '200':
+          description: 'Users list'
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok: { type: boolean }
+                  data: { $ref: '#/components/schemas/User' }
+                type: object
+    post:
+      tags:
+        - Users
+      description: 'Create new user'
+      operationId: 973ae153132a70362405b06dc2850a23
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  description: 'New user name'
+                  type: string
+                balance:
+                  description: 'User balance'
+                  type: number
+                  format: float
+              type: object
+      responses:
+        '200':
+          description: 'User create'
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok: { type: boolean }
+                  data: { $ref: '#/components/schemas/User' }
+                type: object
+        '409':
+          description: 'Duplicated user'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: 'Invalid payload / Fail to save user'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/api/users/{id}':
+    get:
+      tags:
+        - Users
+      description: 'Find user by id'
+      operationId: 71d110b10b1ac4766abfa25e4fb35916
+      responses:
+        '200':
+          description: User
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok: { type: boolean }
+                  data: { $ref: '#/components/schemas/User' }
+                type: object
+        '404':
+          description: 'User not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Users
+      description: 'Update existing user'
+      operationId: 87d6391a31447c282f8cda50910af407
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  description: 'New user name'
+                  type: string
+                balance:
+                  description: 'User balance'
+                  type: number
+                  format: float
+              type: object
+      responses:
+        '200':
+          description: 'User update'
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok: { type: boolean }
+                  data: { $ref: '#/components/schemas/User' }
+                type: object
+        '500':
+          description: 'Invalid payload / Fail to save user'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Users
+      description: 'Delete user'
+      operationId: 0b491e804fd1661d3b62451995d0ed41
+      responses:
+        '200':
+          description: 'User deleted'
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok: { type: boolean }
+                  data: { $ref: '#/components/schemas/User' }
+                type: object
+        '400':
+          description: 'User not deleted / Fail to delete user'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: 'User not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/api/users/{id}/transactions':
+    get:
+      tags:
+        - Users
+      description: 'Get user transactions'
+      operationId: ae38fe71c97a64c95fb80f26fae59cc5
+      responses:
+        '200':
+          description: 'User transactions'
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok: { type: boolean }
+                  data: { type: array, items: { $ref: '#/components/schemas/Transaction' } }
+                type: object
+        '404':
+          description: 'User not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /:
+    get:
+      operationId: c3271c668d930dbb2f7e8adb51d83b30
+      responses:
+        '200':
+          description: 'Welcome page'
+components:
+  schemas:
+    Error:
+      properties:
+        ok:
+          description: 'Indicates if the request was successful'
+          type: boolean
+        error:
+          properties:
+            code:
+              description: 'HTTP status code'
+              type: integer
+            message:
+              description: 'Error message'
+              type: string
+          type: object
+      type: object
+    Transaction:
+      title: Transaction
+      properties:
+        id:
+          description: 'Transaction unique id'
+          type: string
+        mount:
+          description: 'Transaction mount'
+          type: integer
+        created_at:
+          description: 'Transaction date'
+          type: string
+          format: date-time
+        user_id:
+          description: 'User id'
+          type: string
+        target_id:
+          description: 'Target id'
+          type: string
+      type: object
+    User:
+      title: User
+      properties:
+        id:
+          description: 'User unique id'
+          type: string
+        name:
+          description: 'User name'
+          type: string
+        balance:
+          description: 'User balance'
+          type: number
+          format: float
+        created_at:
+          description: 'User created date'
+          type: string
+          format: date-time
+      type: object

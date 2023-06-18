@@ -1,45 +1,17 @@
 <?php
 
-use Mateodioev\HttpRouter\{Request, Response, Router};
-use Mateodioev\HttpRouter\exceptions\{HttpNotFoundException, RequestException};
-
-use BankApi\Models\Error as ErrorResponse;
-use BankApi\Controllers;
 use BankApi\Db\Sql;
+use BankApi\Routes;
+use Mateodioev\HttpRouter\Router;
+use BankApi\Models\Error as ErrorResponse;
+use Mateodioev\HttpRouter\exceptions\{HttpNotFoundException, RequestException};
 
 require __DIR__ . '/vendor/autoload.php';
 
 Sql::prepare(__DIR__);
 $router = new Router;
 
-$router->get('/', function () {
-    return Response::text('Hello World');
-});
-
-$router->mount('/api', function () use ($router) {
-    # $router->all('/{all:path}?', fn (Request $r) => ErrorResponse::json('Invalid endpoint ' . $r->param('path')));
-
-    $router->mount('/users', function () use ($router) {
-
-        $userController = new Controllers\UserController;
-        // Get user transactions
-        $router->get('/{id}/transactions', $userController->getTransactions(...));
-        // Get user by id
-        $router->get('/{id}', $userController->byId(...));
-        // Update user info
-        $router->put('/{id}', $userController->update(...));
-        // Delete user
-        $router->delete('/{id}', $userController->delete(...));
-        // Get all users
-        $router->get('/', $userController->all(...));
-        // Create new user
-        $router->post('/', $userController->create(...));
-    });
-
-    $router->mount('/transactions', function () use ($router) {
-        $router->all('/', fn () => ErrorResponse::json('Not implemented'));
-    });
-});
+Routes::register($router);
 
 try {
     $router->run();
