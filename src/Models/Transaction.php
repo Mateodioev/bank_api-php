@@ -50,7 +50,7 @@ class Transaction extends Sql
         return [
             'id'         => $this->id,
             'mount'      => $this->mount,
-            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'created_at' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'user_id'    => $this->user_id,
             'target_id'  => $this->target_id,
         ];
@@ -114,5 +114,18 @@ class Transaction extends Sql
     {
         $this->target_id = $targetId;
         return $this;
+    }
+
+    public function getCreatedAt(): DateTime
+    {
+        if ($this->created_at === null) {
+            $date = self::exec('SELECT created_at FROM transactions WHERE id = ?', [$this->id]);
+            if ($date === false) {
+                throw new RequestException('Transaction not found', 404);
+            }
+
+            $this->created_at = new DateTime($date['data']['created_at']);
+        }
+        return $this->created_at;
     }
 }
