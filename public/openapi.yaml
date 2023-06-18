@@ -288,12 +288,12 @@ paths:
         - Home
       operationId: c3271c668d930dbb2f7e8adb51d83b30
       responses:
-        '200':
-          description: 'Welcome page'
+        '302':
+          description: 'Redirect to api docs'
   /api/docs:
     get:
       tags:
-        - Docs
+        - Home
       operationId: de102a4ebfde0ca96112adb3afd74bd1
       responses:
         '200':
@@ -303,7 +303,7 @@ components:
     Error:
       properties:
         ok:
-          description: 'Indicates if the request was successful'
+          description: 'Indicates if the request was successful. Always false'
           type: boolean
         error:
           properties:
@@ -314,6 +314,15 @@ components:
               description: 'Error message'
               type: string
           type: object
+      type: object
+    Success:
+      properties:
+        ok:
+          description: 'Indicates if the request was successful. Always true'
+          type: boolean
+        data:
+          description: 'Request content, can be User, Transaction or an array of these'
+          type: mixed
       type: object
     Transaction:
       title: Transaction

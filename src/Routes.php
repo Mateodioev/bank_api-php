@@ -8,12 +8,13 @@ use OpenApi\Attributes as OA;
 #[Oa\Info(title: "Bank api", version: "0.1")]
 class Routes
 {
-    #[OA\Get(path: '/', tags: ['Home'])]
-    #[OA\Response(response: 200, description: 'Welcome page')]
+    #[OA\Get(path: '/', tags: ['Home'], responses: [
+        new OA\Response(response: 302, description: 'Redirect to api docs')
+    ])]
     public static function register(Router &$router): void
     {
         $router->get('/', function () {
-            return Response::text('Hello World');
+            return Response::redirect('/api/docs');
         });
 
         self::registerApi($router);

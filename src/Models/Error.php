@@ -6,7 +6,7 @@ use Mateodioev\HttpRouter\Response;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(properties: [
-    new OA\Property(property: 'ok', type: 'boolean', description: 'Indicates if the request was successful'),
+    new OA\Property(property: 'ok', type: 'boolean', description: 'Indicates if the request was successful. Always false'),
     new OA\Property(
         property: 'error',
         type: 'object',
