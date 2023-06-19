@@ -1,0 +1,12 @@
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php [L]
+
+Options -Indexes
+IndexIgnore *
+
+<FilesMatch "\.(htaccess|htpasswd|ini|phps|log|bak|txt|sql|json|lock|env)$">
+ Order Allow,Deny
+ Deny from all
+</FilesMatch>

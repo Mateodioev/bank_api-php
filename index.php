@@ -19,4 +19,6 @@ try {
     $router->send(ErrorResponse::json($e->getMessage() ?? 'Not found', $e->getCode() ?: 404));
 } catch (RequestException $e) {
     $router->send(ErrorResponse::json($e->getMessage() ?? 'Server error', $e->getCode() ?: 500));
+} catch (Exception) {
+    $router->send(ErrorResponse::json('Unknown error', 500));
 }
