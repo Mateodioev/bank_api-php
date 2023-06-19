@@ -28,15 +28,19 @@ Ejemplo de una api rest simple para un banco
 2. Instalar la base de datos
 
     Crea un nuevo usuario de mysql y una db
+
     ```bash
     mysql -u root -p
     ```
+
     ```sql
     CREATE USER 'tu_usuario'@'localhost' IDENTIFIED BY 'contraseña';
-    CREATE DATABASE 'bank_api';
-    GRANT ALL PRIVILEGES ON 'bank_api' . * TO 'tu_usuario'@'localhost';
+    CREATE DATABASE bank_example;
+    GRANT ALL PRIVILEGES ON bank_example . * TO 'tu_usuario'@'localhost';
     FLUSH PRIVILEGES;
     ```
+    Crea las tablas segun las tablas del archivo `db.sql`
+
 3. Crea los archivos de configuracion `.env` y `.htaccess`
 
     ```bash
