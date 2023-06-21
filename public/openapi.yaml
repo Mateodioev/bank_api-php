@@ -277,6 +277,99 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /api/users/login/:
+    post:
+      tags:
+        - Users
+      description: 'Login in a user account with id and pin'
+      operationId: a57fbcb38ed405eab1ddc5d06b3cd68e
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                id:
+                  description: 'User id'
+                  type: string
+                pin:
+                  description: 'User secret pin'
+                  type: integer
+              type: object
+      responses:
+        '200':
+          description: 'User data'
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok: { type: boolean }
+                  data: { $ref: '#/components/schemas/User' }
+                type: object
+        '401':
+          description: 'Invalid user pin'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: 'User not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/api/user/{id}/withdraw/':
+    put:
+      tags:
+        - Users
+      description: 'Withdraw money from an account'
+      operationId: 535568909320cbe63065bf37ae270f00
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                amount:
+                  description: 'Amount to withdraw'
+                  type: number
+                  format: float
+                pin:
+                  description: 'User secret pin'
+                  type: integer
+              type: object
+      responses:
+        '200':
+          description: 'User data'
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok: { type: boolean }
+                  data: { $ref: '#/components/schemas/User' }
+                type: object
+        '400':
+          description: 'Invalid amount to withdraw'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Invalid user pin'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: 'User not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: 'Fail to update user'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   '/api/users/{id}/transactions':
     get:
       tags:
@@ -383,10 +476,6 @@ components:
           description: 'User balance'
           type: number
           format: float
-        pin:
-          description: 'User balance'
-          type: integer
-          readOnly: true
         created_at:
           description: 'User created date'
           type: string

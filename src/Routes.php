@@ -47,10 +47,10 @@ class Routes
 
             // Get user transactions
             $router->get('/{id}/transactions', $userController->getTransactions(...));
-            // Send money to another user
-            $router->post('/{id}/send/{targetId}', fn () => '');
             // Get user by id
             $router->get('/{id}', $userController->byId(...));
+            // Login
+            $router->post('/login/', $userController->login(...));
             // Update user info
             $router->put('/{id}', $userController->update(...));
             // Delete user

@@ -4,6 +4,8 @@ namespace BankApi\Controllers;
 
 use BankApi\Models\{Error, Success, User};
 use Mateodioev\HttpRouter\{Request, Response};
+use Mateodioev\HttpRouter\exceptions\RequestException;
+
 use OpenApi\Attributes as OA;
 
 use function BankApi\genUUIDv4;
@@ -16,14 +18,18 @@ class UserController extends baseController
         description: 'Get all users',
         tags: ['Users'],
         parameters: [
-            new OA\Parameter(name: 'limit',
+            new OA\Parameter(
+                name: 'limit',
                 in: 'query',
                 required: false,
-                schema: new OA\Schema(type: 'integer')),
-            new OA\Parameter(name: 'offset',
+                schema: new OA\Schema(type: 'integer')
+            ),
+            new OA\Parameter(
+                name: 'offset',
                 in: 'query',
                 required: false,
-                schema: new OA\Schema(type: 'integer'))
+                schema: new OA\Schema(type: 'integer')
+            )
         ],
         responses: [
             new OA\Response(
@@ -31,11 +37,15 @@ class UserController extends baseController
                 description: 'Users list',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(type: 'boolean',
-                            property: 'ok'),
-                        new OA\Property(type: 'object',
+                        new OA\Property(
+                            type: 'boolean',
+                            property: 'ok'
+                        ),
+                        new OA\Property(
+                            type: 'object',
                             property: 'data',
-                            ref: '#/components/schemas/User')
+                            ref: '#/components/schemas/User'
+                        )
                     ]
                 )
             ),
@@ -57,11 +67,13 @@ class UserController extends baseController
         description: 'Find user by id',
         tags: ['Users'],
         parameters: [
-            new OA\Parameter(name: 'id',
+            new OA\Parameter(
+                name: 'id',
                 in: 'path',
                 required: true,
                 description: 'User id',
-                schema: new OA\Schema(type: 'string'))
+                schema: new OA\Schema(type: 'string')
+            )
         ],
         responses: [
             new OA\Response(
@@ -69,11 +81,15 @@ class UserController extends baseController
                 description: 'User',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(type: 'boolean',
-                            property: 'ok'),
-                        new OA\Property(type: 'object',
+                        new OA\Property(
+                            type: 'boolean',
+                            property: 'ok'
+                        ),
+                        new OA\Property(
+                            type: 'object',
                             property: 'data',
-                            ref: '#/components/schemas/User'),
+                            ref: '#/components/schemas/User'
+                        ),
                     ]
                 )
             ),
@@ -92,21 +108,167 @@ class UserController extends baseController
     }
 
     #[OA\Post(
+        path: '/api/users/login/',
+        description: 'Login in a user account with id and pin',
+        tags: ['Users'],
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(
+                        property: 'id',
+                        type: 'string',
+                        description: 'User id'
+                    ),
+                    new OA\Property(
+                        property: 'pin',
+                        type: 'int',
+                        description: 'User secret pin'
+                    )
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'User data',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'ok',
+                            type: 'boolean'
+                        ),
+                        new OA\Property(
+                            property: 'data',
+                            type: 'object',
+                            ref: '#/components/schemas/User'
+                        )
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 401,
+                description: 'Invalid user pin',
+                content: new OA\JsonContent(ref: '#/components/schemas/Error')
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'User not found',
+                content: new OA\JsonContent(ref: '#/components/schemas/Error')
+            )
+        ]
+    )]
+    public function login(Request $r): Response
+    {
+        $body = json_decode($r->body(), true);
+        $user = User::find($body['id'] ?? '');
+
+        if ($user->pin !== ($body['pin'] ?? 0))
+            throw new RequestException('Invalid pin', 401);
+
+        return Success::json($user->toArray());
+    }
+
+    #[OA\Put(
+        path: '/api/user/{id}/withdraw/',
+        description: 'Withdraw money from an account',
+        tags: ['Users'],
+        requestBody: new OA\RequestBody(
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(
+                        property: 'amount',
+                        type: 'float',
+                        description: 'Amount to withdraw'
+                    ),
+                    new OA\Property(
+                        property: 'pin',
+                        type: 'int',
+                        description: 'User secret pin'
+                    )
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'User data',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'ok',
+                            type: 'boolean'
+                        ),
+                        new OA\Property(
+                            property: 'data',
+                            type: 'object',
+                            ref: '#/components/schemas/User'
+                        )
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 400,
+                description: 'Invalid amount to withdraw',
+                content: new OA\JsonContent(ref: '#/components/schemas/Error')
+            ),
+            new OA\Response(
+                response: 401,
+                description: 'Invalid user pin',
+                content: new OA\JsonContent(ref: '#/components/schemas/Error')
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'User not found',
+                content: new OA\JsonContent(ref: '#/components/schemas/Error')
+            ),
+            new OA\Response(
+                response: 500,
+                description: 'Fail to update user',
+                content: new OA\JsonContent(ref: '#/components/schemas/Error')
+            )
+        ]
+    )]
+    public function withdraw(Request $r): Response
+    {
+        $body = json_decode($r->body(), true);
+        $pin = (int) $body['pin'] ?? 0;
+        $amount = (float) $body['amount'] ?? 0;
+
+        $user = User::find($r->param('id'));
+
+        if ($user->pin !== $pin)
+            throw new RequestException('Invalid user pin', 401);
+
+        if ($user->balance < $amount)
+            throw new RequestException('Invalid amount', 400);
+
+        $user->setBalance($user->balance - $amount)->update();
+
+        return Success::json($user->toArray());
+    }
+
+    #[OA\Post(
         path: '/api/users/',
         description: 'Create new user',
         tags: ['Users'],
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(type: 'string',
+                    new OA\Property(
+                        type: 'string',
                         property: 'name',
-                        description: 'New user name'),
-                    new OA\Property(type: 'float',
+                        description: 'New user name'
+                    ),
+                    new OA\Property(
+                        type: 'float',
                         property: 'balance',
-                        description: 'User balance'),
-                    new OA\Property(type: 'int',
+                        description: 'User balance'
+                    ),
+                    new OA\Property(
+                        type: 'int',
                         property: 'pin',
-                        description: 'Secret user pin'),
+                        description: 'Secret user pin'
+                    ),
                 ]
             )
         ),
@@ -116,11 +278,15 @@ class UserController extends baseController
                 description: 'User create',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(type: 'boolean',
-                            property: 'ok'),
-                        new OA\Property(type: 'object',
+                        new OA\Property(
+                            type: 'boolean',
+                            property: 'ok'
+                        ),
+                        new OA\Property(
+                            type: 'object',
                             property: 'data',
-                            ref: '#/components/schemas/User'),
+                            ref: '#/components/schemas/User'
+                        ),
                     ]
                 )
             ),
@@ -155,21 +321,27 @@ class UserController extends baseController
         description: 'Update existing user',
         tags: ['Users'],
         parameters: [
-            new OA\Parameter(name: 'id',
+            new OA\Parameter(
+                name: 'id',
                 in: 'path',
                 required: true,
                 description: 'User id',
-                schema: new OA\Schema(type: 'string'))
+                schema: new OA\Schema(type: 'string')
+            )
         ],
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(type: 'string',
+                    new OA\Property(
+                        type: 'string',
                         property: 'name',
-                        description: 'New user name'),
-                    new OA\Property(type: 'float',
+                        description: 'New user name'
+                    ),
+                    new OA\Property(
+                        type: 'float',
                         property: 'balance',
-                        description: 'User balance')
+                        description: 'User balance'
+                    )
                 ]
             )
         ),
@@ -179,12 +351,16 @@ class UserController extends baseController
                 description: 'User update',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(type: 'boolean',
-                            property: 'ok'),
-                        new OA\Property(type: 'object',
+                        new OA\Property(
+                            type: 'boolean',
+                            property: 'ok'
+                        ),
+                        new OA\Property(
+                            type: 'object',
                             property: 'data',
                             ref: '#/components/schemas/User',
-                            description: 'User data after update'),
+                            description: 'User data after update'
+                        ),
                     ]
                 )
             ),
@@ -213,11 +389,13 @@ class UserController extends baseController
         description: 'Delete user',
         tags: ['Users'],
         parameters: [
-            new OA\Parameter(name: 'id',
+            new OA\Parameter(
+                name: 'id',
                 in: 'path',
                 required: true,
                 description: 'User id',
-                schema: new OA\Schema(type: 'string'))
+                schema: new OA\Schema(type: 'string')
+            )
         ],
         responses: [
             new OA\Response(
@@ -225,11 +403,15 @@ class UserController extends baseController
                 description: 'User deleted',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(type: 'boolean',
-                            property: 'ok'),
-                        new OA\Property(type: 'object',
+                        new OA\Property(
+                            type: 'boolean',
+                            property: 'ok'
+                        ),
+                        new OA\Property(
+                            type: 'object',
                             property: 'data',
-                            ref: '#/components/schemas/User'),
+                            ref: '#/components/schemas/User'
+                        ),
                     ]
                 )
             ),
@@ -259,11 +441,13 @@ class UserController extends baseController
         description: 'Get all user transactions',
         tags: ['Users'],
         parameters: [
-            new OA\Parameter(name: 'id',
+            new OA\Parameter(
+                name: 'id',
                 in: 'path',
                 required: true,
                 description: 'User id',
-                schema: new OA\Schema(type: 'string'))
+                schema: new OA\Schema(type: 'string')
+            )
         ],
         responses: [
             new OA\Response(
@@ -271,11 +455,15 @@ class UserController extends baseController
                 description: 'User transactions',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(type: 'boolean',
-                            property: 'ok'),
-                        new OA\Property(type: 'array',
+                        new OA\Property(
+                            type: 'boolean',
+                            property: 'ok'
+                        ),
+                        new OA\Property(
+                            type: 'array',
                             property: 'data',
-                            items: new OA\Items(ref: '#/components/schemas/Transaction')),
+                            items: new OA\Items(ref: '#/components/schemas/Transaction')
+                        ),
                     ]
                 )
             ),
