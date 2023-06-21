@@ -16,8 +16,14 @@ class UserController extends baseController
         description: 'Get all users',
         tags: ['Users'],
         parameters: [
-            new OA\Parameter(name: 'limit', in: 'query', required: false, schema: new OA\Schema(type: 'integer')),
-            new OA\Parameter(name: 'offset', in: 'query', required: false, schema: new OA\Schema(type: 'integer'))
+            new OA\Parameter(name: 'limit',
+                in: 'query',
+                required: false,
+                schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'offset',
+                in: 'query',
+                required: false,
+                schema: new OA\Schema(type: 'integer'))
         ],
         responses: [
             new OA\Response(
@@ -25,8 +31,11 @@ class UserController extends baseController
                 description: 'Users list',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(type: 'boolean', property: 'ok'),
-                        new OA\Property(type: 'object', property: 'data', ref: '#/components/schemas/User')
+                        new OA\Property(type: 'boolean',
+                            property: 'ok'),
+                        new OA\Property(type: 'object',
+                            property: 'data',
+                            ref: '#/components/schemas/User')
                     ]
                 )
             ),
@@ -34,10 +43,11 @@ class UserController extends baseController
     )]
     public function all(Request $r): Response
     {
+        $getAll = 'SELECT id, nombre, saldo, created_at FROM users';
         $q = $r->query();
         $users = (isset($q['limit']) && isset($q['offset']))
-            ? $this->sqlAll('SELECT * FROM users LIMIT ? OFFSET ?', [(int) $q['limit'], (int) $q['offset']])
-            : $this->sqlAll('SELECT * FROM users');
+            ? $this->sqlAll($getAll . ' LIMIT ? OFFSET ?', [(int) $q['limit'], (int) $q['offset']])
+            : $this->sqlAll($getAll);
 
         return Success::json($users);
     }
@@ -47,7 +57,11 @@ class UserController extends baseController
         description: 'Find user by id',
         tags: ['Users'],
         parameters: [
-            new OA\Parameter(name: 'id', in: 'path', required: true, description: 'User id', schema: new OA\Schema(type: 'string'))
+            new OA\Parameter(name: 'id',
+                in: 'path',
+                required: true,
+                description: 'User id',
+                schema: new OA\Schema(type: 'string'))
         ],
         responses: [
             new OA\Response(
@@ -55,8 +69,11 @@ class UserController extends baseController
                 description: 'User',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(type: 'boolean', property: 'ok'),
-                        new OA\Property(type: 'object', property: 'data', ref: '#/components/schemas/User'),
+                        new OA\Property(type: 'boolean',
+                            property: 'ok'),
+                        new OA\Property(type: 'object',
+                            property: 'data',
+                            ref: '#/components/schemas/User'),
                     ]
                 )
             ),
@@ -81,8 +98,15 @@ class UserController extends baseController
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(type: 'string', property: 'name', description: 'New user name'),
-                    new OA\Property(type: 'float', property: 'balance', description: 'User balance'),
+                    new OA\Property(type: 'string',
+                        property: 'name',
+                        description: 'New user name'),
+                    new OA\Property(type: 'float',
+                        property: 'balance',
+                        description: 'User balance'),
+                    new OA\Property(type: 'int',
+                        property: 'pin',
+                        description: 'Secret user pin'),
                 ]
             )
         ),
@@ -92,8 +116,11 @@ class UserController extends baseController
                 description: 'User create',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(type: 'boolean', property: 'ok'),
-                        new OA\Property(type: 'object', property: 'data', ref: '#/components/schemas/User'),
+                        new OA\Property(type: 'boolean',
+                            property: 'ok'),
+                        new OA\Property(type: 'object',
+                            property: 'data',
+                            ref: '#/components/schemas/User'),
                     ]
                 )
             ),
@@ -116,7 +143,8 @@ class UserController extends baseController
          */
         $user = (new \JsonMapper)->map(json_decode($r->body()), User::class);
 
-        if (!$user->id) $user->setId(genUUIDv4());
+        if (!$user->id)
+            $user->setId(genUUIDv4());
 
         $user->save();
         return Success::json($user->toArray());
@@ -127,13 +155,21 @@ class UserController extends baseController
         description: 'Update existing user',
         tags: ['Users'],
         parameters: [
-            new OA\Parameter(name: 'id', in: 'path', required: true, description: 'User id', schema: new OA\Schema(type: 'string'))
+            new OA\Parameter(name: 'id',
+                in: 'path',
+                required: true,
+                description: 'User id',
+                schema: new OA\Schema(type: 'string'))
         ],
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(type: 'string', property: 'name', description: 'New user name'),
-                    new OA\Property(type: 'float', property: 'balance', description: 'User balance')
+                    new OA\Property(type: 'string',
+                        property: 'name',
+                        description: 'New user name'),
+                    new OA\Property(type: 'float',
+                        property: 'balance',
+                        description: 'User balance')
                 ]
             )
         ),
@@ -143,8 +179,12 @@ class UserController extends baseController
                 description: 'User update',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(type: 'boolean', property: 'ok'),
-                        new OA\Property(type: 'object', property: 'data', ref: '#/components/schemas/User', description: 'User data after update'),
+                        new OA\Property(type: 'boolean',
+                            property: 'ok'),
+                        new OA\Property(type: 'object',
+                            property: 'data',
+                            ref: '#/components/schemas/User',
+                            description: 'User data after update'),
                     ]
                 )
             ),
@@ -160,8 +200,8 @@ class UserController extends baseController
         /**
          * @var User $user
          */
-        $user = (new \JsonMapper)->map(json_decode($r->body()), User::class);
-        $user->setId($r->param('id'));
+        $user = User::find($r->param('id'));
+        $user = (new \JsonMapper)->map(json_decode($r->body()), $user);
 
         $user->update();
 
@@ -173,7 +213,11 @@ class UserController extends baseController
         description: 'Delete user',
         tags: ['Users'],
         parameters: [
-            new OA\Parameter(name: 'id', in: 'path', required: true, description: 'User id', schema: new OA\Schema(type: 'string'))
+            new OA\Parameter(name: 'id',
+                in: 'path',
+                required: true,
+                description: 'User id',
+                schema: new OA\Schema(type: 'string'))
         ],
         responses: [
             new OA\Response(
@@ -181,8 +225,11 @@ class UserController extends baseController
                 description: 'User deleted',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(type: 'boolean', property: 'ok'),
-                        new OA\Property(type: 'object', property: 'data', ref: '#/components/schemas/User'),
+                        new OA\Property(type: 'boolean',
+                            property: 'ok'),
+                        new OA\Property(type: 'object',
+                            property: 'data',
+                            ref: '#/components/schemas/User'),
                     ]
                 )
             ),
@@ -202,7 +249,8 @@ class UserController extends baseController
     {
         $user = User::find($r->param('id'));
 
-        if ($user->delete()) return Success::json($user->toArray());
+        if ($user->delete())
+            return Success::json($user->toArray());
         return Error::json('User not deleted');
     }
 
@@ -211,7 +259,11 @@ class UserController extends baseController
         description: 'Get all user transactions',
         tags: ['Users'],
         parameters: [
-            new OA\Parameter(name: 'id', in: 'path', required: true, description: 'User id', schema: new OA\Schema(type: 'string'))
+            new OA\Parameter(name: 'id',
+                in: 'path',
+                required: true,
+                description: 'User id',
+                schema: new OA\Schema(type: 'string'))
         ],
         responses: [
             new OA\Response(
@@ -219,8 +271,11 @@ class UserController extends baseController
                 description: 'User transactions',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(type: 'boolean', property: 'ok'),
-                        new OA\Property(type: 'array', property: 'data', items: new OA\Items(ref: '#/components/schemas/Transaction')),
+                        new OA\Property(type: 'boolean',
+                            property: 'ok'),
+                        new OA\Property(type: 'array',
+                            property: 'data',
+                            items: new OA\Items(ref: '#/components/schemas/Transaction')),
                     ]
                 )
             ),
@@ -234,7 +289,7 @@ class UserController extends baseController
     public function getTransactions(Request $r): Response
     {
         $user = User::find($r->param('id'));
-        $transactions = \array_map(fn ($t) => $t->toArray(), $user->findTransactions());
+        $transactions = \array_map(fn($t) => $t->toArray(), $user->findTransactions());
 
         return Success::json($transactions);
     }

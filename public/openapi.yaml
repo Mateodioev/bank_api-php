@@ -51,6 +51,9 @@ paths:
                 user_id:
                   description: 'User id'
                   type: string
+                user_pin:
+                  description: 'Secret user pin'
+                  type: integer
                 target_id:
                   description: 'User id target'
                   type: string
@@ -67,6 +70,12 @@ paths:
                 type: object
         '400':
           description: 'Insufficient user funds'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 'Invalid user pin'
           content:
             application/json:
               schema:
@@ -135,6 +144,9 @@ paths:
                   description: 'User balance'
                   type: number
                   format: float
+                pin:
+                  description: 'Secret user pin'
+                  type: integer
               type: object
       responses:
         '200':
@@ -371,6 +383,10 @@ components:
           description: 'User balance'
           type: number
           format: float
+        pin:
+          description: 'User balance'
+          type: integer
+          readOnly: true
         created_at:
           description: 'User created date'
           type: string

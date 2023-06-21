@@ -20,6 +20,9 @@ class User extends Sql
 
     #[OA\Property(type: 'float', description: 'User balance')]
     public float $balance = 0;
+
+    public int $pin = 0;
+
     #[OA\Property(type: 'datetime', description: 'User created date')]
     public ?DateTime $created_at = null;
 
@@ -30,7 +33,7 @@ class User extends Sql
 
     public static function create(string $name, ?string $id = null)
     {
-        return (new static)
+        return (new static )
             ->setName($name)
             ->setId($id ?? genUUIDv4());
     }
@@ -45,9 +48,9 @@ class User extends Sql
     public function toArray(): array
     {
         return [
-            'id'        => $this->id,
-            'name'      => $this->name,
-            'balance'   => $this->balance,
+            'id' => $this->id,
+            'name' => $this->name,
+            'balance' => $this->balance,
             'create_at' => $this->getCreateAt()->format('Y-m-d H:i:s'),
         ];
     }
@@ -65,17 +68,24 @@ class User extends Sql
         $user = $user['data'];
         return $this->setName($user['nombre'])
             ->setBalance($user['saldo'])
-            ->setCreatedAt(new DateTime($user['created_at']));
+            ->setCreatedAt(new DateTime($user['created_at']))
+            ->setPin($user['pin']);
     }
 
     public function save(): static
     {
         try {
-            $r = self::exec('INSERT INTO users (id, nombre, saldo) VALUES (?, ?, ?)', [$this->id, $this->name, $this->balance]);
-        } catch (\Throwable) {
-            throw new RequestException('Duplicate user', 409);
+            $r = self::exec('INSERT INTO users (id, nombre, saldo, pin) VALUES (?, ?, ?, ?)', [
+                $this->id,
+                $this->name,
+                $this->balance,
+                $this->pin
+            ]);
+        } catch (\Throwable $e) {
+            throw new RequestException($e, 409);
         }
-        if (!$r) throw new RequestException('Fail to save user', 500);
+        if (!$r)
+            throw new RequestException('Fail to save user', 500);
 
         return $this;
     }
@@ -83,7 +93,12 @@ class User extends Sql
     public function update()
     {
         try {
-            self::exec('UPDATE users SET nombre = ?, saldo = ? WHERE id = ?', [$this->name, $this->balance, $this->id]);
+            self::exec('UPDATE users SET nombre = ?, saldo = ?, pin = ? WHERE id = ?', [
+                $this->name,
+                $this->balance,
+                $this->pin,
+                $this->id
+            ]);
         } catch (\Throwable) {
             throw new RequestException('Fail to update user', 500);
         }
@@ -108,7 +123,7 @@ class User extends Sql
     public function findTransactions(): array
     {
         $transactions = self::getAll('SELECT * FROM transactions WHERE user_id = ?', [$this->id]);
-        $this->transactions = \array_map(fn ($transaction) => Transaction::fromArray($transaction), $transactions);
+        $this->transactions = \array_map(fn($transaction) => Transaction::fromArray($transaction), $transactions);
         return $this->transactions;
     }
 
@@ -127,6 +142,15 @@ class User extends Sql
     public function setBalance(float $balance): static
     {
         $this->balance = $balance;
+        return $this;
+    }
+
+    public function setPin(int $pin): static
+    {
+        if (\strlen((string) $pin) !== 4)
+            throw new RequestException('Invalid pin', 400);
+
+        $this->pin = $pin;
         return $this;
     }
 
