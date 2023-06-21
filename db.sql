@@ -4,7 +4,8 @@ CREATE TABLE
     `users` (
         `id` varchar(50) NOT NULL,
         `nombre` varchar(20) NOT NULL,
-        `saldo` float DEFAULT 0,
+        `pin` int(11) NOT NULL COMMENT 'AMT pin code',
+        `saldo` float DEFAULT 0 COMMENT 'Saldo del usuario',
         `created_at` datetime NOT NULL DEFAULT current_timestamp(),
         PRIMARY KEY (`id`)
     ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
