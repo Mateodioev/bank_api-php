@@ -81,8 +81,8 @@ class User extends Sql
                 $this->balance,
                 $this->pin
             ]);
-        } catch (\Throwable $e) {
-            throw new RequestException($e, 409);
+        } catch (\Throwable) {
+            throw new RequestException('Duplicated users', 409);
         }
         if (!$r)
             throw new RequestException('Fail to save user', 500);
