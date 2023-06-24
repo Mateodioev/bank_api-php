@@ -169,9 +169,18 @@ class UserController extends baseController
     }
 
     #[OA\Put(
-        path: '/api/user/{id}/withdraw/',
+        path: '/api/users/{id}/withdraw/',
         description: 'Withdraw money from an account',
         tags: ['Users'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                required: true,
+                description: 'User id',
+                schema: new OA\Schema(type: 'string')
+            )
+        ],
         requestBody: new OA\RequestBody(
             content: new OA\JsonContent(
                 properties: [

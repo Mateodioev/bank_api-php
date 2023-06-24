@@ -9,7 +9,10 @@ use OpenApi\Attributes as OA;
 class Routes
 {
     #[OA\Get(path: '/', tags: ['Home'], responses: [
-        new OA\Response(response: 302, description: 'Redirect to api docs')
+        new OA\Response(
+            response: 302,
+            description: 'Redirect to api docs'
+        )
     ])]
     public static function register(Router &$router): void
     {
@@ -30,13 +33,22 @@ class Routes
     }
 
     #[OA\Get(path: '/api/docs', tags: ['Home'], responses: [
-        new OA\Response(response: 200, description: 'Swagger docs')
+        new OA\Response(
+            response: 200,
+            description: 'Swagger docs'
+        )
     ])]
     protected static function registerApiDocs(Router &$router): void
     {
         $router->mount('/docs', function () use ($router) {
-            $router->get('/', fn () => Response::html(\file_get_contents($_ENV['WORK_DIR'] . '/public/swagger.html')));
-            $router->get('/openapi.yaml', fn () => Response::text(\file_get_contents($_ENV['OPENAPI_FILE']))->setContentType('text/yaml'));
+            $router->get(
+                '/',
+                fn() => Response::html(\file_get_contents($_ENV['WORK_DIR'] . '/public/swagger.html'))
+            );
+            $router->get(
+                '/openapi.yaml',
+                fn() => Response::text(\file_get_contents($_ENV['OPENAPI_FILE']))->setContentType('text/yaml')
+            );
         });
     }
 
@@ -51,6 +63,8 @@ class Routes
             $router->get('/{id}', $userController->byId(...));
             // Login
             $router->post('/login/', $userController->login(...));
+            // Withdraw funds
+            $router->put('/{id}/withdraw/', $userController->withdraw(...));
             // Update user info
             $router->put('/{id}', $userController->update(...));
             // Delete user

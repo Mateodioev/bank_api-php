@@ -13,6 +13,8 @@ Ejemplo de una api rest simple para un banco
 | GET | /api/users/{id} | Obtener un usuario por su id |
 | PUT | /api/users/{id} | Actualizar un usuario |
 | DELETE | /api/users/{id} | Eliminar un usuario |
+| POST | /api/users/login/ | Obtiene la informacion del usuario si los datos son correctos
+| POST | /api/users/{id}/withdraw | Retira una cantidad de un usuario
 | GET | /api/users/{id}/transactions | Obtener todas las transaciones de un usuario
 | GET | /api/transactions/{id} | Obtener un transacion por su ID |
 | POST | /api/transactions/ | Crear una nueva transacion

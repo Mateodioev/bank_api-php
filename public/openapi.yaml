@@ -317,12 +317,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/api/user/{id}/withdraw/':
+  '/api/users/{id}/withdraw/':
     put:
       tags:
         - Users
       description: 'Withdraw money from an account'
-      operationId: 535568909320cbe63065bf37ae270f00
+      operationId: e82114e9603606db81f6f2281bb65f81
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'User id'
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
