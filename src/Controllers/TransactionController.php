@@ -136,7 +136,7 @@ class TransactionController extends baseController
     public function create(Request $r): Response
     {
         $body = json_decode($r->body());
-        $userPin = $body->pin;
+        $userPin = $body->pin ?? -1;
         unset($body->pin);
         /**
          * @var Transaction $transaction
