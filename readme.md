@@ -21,6 +21,26 @@ Ejemplo de una api rest simple para un banco
 
 ## Instalacion
 
+### Docker
+
+1. Clona esta repositorio 
+    ```bash
+    git clone https://github.com/Mateodioev/bank_api-php.git
+    cd bank_api-php
+    ```
+
+2. Levanta el servicio con docker
+    ```bash
+    docker compose up -d
+    ```
+3. Ve a la documentacion
+    ```
+    http://localhost:8080/api/docs
+    ```
+    > Puedes cambiar el puerto en el archivo .env
+
+### Manual
+
 1. Clona esta repositorio 
     ```bash
     git clone https://github.com/Mateodioev/bank_api-php.git

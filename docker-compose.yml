@@ -1,18 +1,18 @@
-version: '3.8'
+version: "3.8"
 
 services:
   web:
     container_name: php-apache
     build: .
     ports:
-      - 8080:80
+      - ${PUBLIC_PORT}:80
     links:
       - db
     networks:
       - app-network
   db:
-    # container_name: db
-    image: mysql
+    container_name: db
+    image: mariadb:10.6
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}

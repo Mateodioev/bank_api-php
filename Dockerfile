@@ -1,13 +1,5 @@
 FROM php:8.2-apache
-
-# Copy code
-COPY src/ /var/www/html/src/
-COPY public/ /var/www/html/public/
-COPY index.php /var/www/html/
-COPY composer.json /var/www/html/
-COPY composer.lock /var/www/html/
-COPY .htaccess /var/www/html/
-COPY .env /var/www/html/
+COPY --from=composer:2.1.8 /usr/bin/composer /usr/local/bin/composer
 
 # Install dependencies
 RUN apt-get update \
@@ -18,12 +10,21 @@ RUN apt-get update \
     zip \
     unzip
 
+# Enable apache modules
+# Routing
 RUN a2enmod rewrite \
     && service apache2 restart
 
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Copy code
+COPY src/ /var/www/html/src/
+COPY public/ /var/www/html/public/
+COPY index.php /var/www/html/
+COPY composer.json /var/www/html/
+COPY .htaccess /var/www/html/
+COPY .env /var/www/html/
+
 WORKDIR /var/www/html/
+
 # Install dependencies
 RUN composer install \
     --no-interaction \
