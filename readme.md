@@ -28,7 +28,13 @@ Ejemplo de una api rest simple para un banco
     git clone https://github.com/Mateodioev/bank_api-php.git
     cd bank_api-php
     ```
-
+2. Crea los archivos de configuracion
+   ```bash
+   cp example.env .env
+   cp example.htaccess .htaccess
+   ```
+   Luego edita el archivo .env
+   
 2. Levanta el servicio con docker
     ```bash
     docker compose up -d
